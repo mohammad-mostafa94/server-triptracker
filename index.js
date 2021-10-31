@@ -21,8 +21,9 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
-        const database = client.db("travel-house");
+        const database = client.db("triptracker");
         const servicesCollection = database.collection("services");
+        const userInfoCollection = database.collection("userInfo");
 
         // GET API for find multiple data.
         app.get("/services", async(req, res) => {
@@ -42,8 +43,21 @@ async function run() {
         // POST API for create single data
         app.post("/service", async(req, res) => {
             const service = req.body;
-            const singleService = await servicesCollection.insertOne(service);
+            const singleService = await  servicesCollection.insertOne(service);
             res.json(singleService);
+        });
+
+
+        app.post("/userInfo", async(req, res) => {
+            const user = req.body;
+            const singleUser = await userInfoCollection.insertOne(user);
+            res.json(singleUser);
+        });
+
+        app.get("/usersInfo", async(req, res) => {
+            const cursor = userInfoCollection.find({});
+            const usersInfo = await cursor.toArray();
+            res.send(usersInfo);
         });
 
         app.put("/update/:id", async(req, res) => {
