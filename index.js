@@ -22,7 +22,9 @@ async function run() {
     try {
         await client.connect();
         const database = client.db("triptracker");
-        const servicesCollection = database.collection("services");
+        const database2 = client.db("travel-house");
+        
+        const servicesCollection = database2.collection("services");
 
         const userInfoCollection = database.collection("userInfo");
 
