@@ -24,9 +24,8 @@ async function run() {
         const database = client.db("triptracker");
         const database2 = client.db("travel-house");
         
-        const servicesCollection = database2.collection("services");
-
-        const userInfoCollection = database.collection("userInfo");
+        const servicesCollection = database.collection("services");
+        const userInfoCollection = database2.collection("userInfo");
 
         // GET API for find multiple data.
         app.get("/services", async(req, res) => {
@@ -38,16 +37,11 @@ async function run() {
         // GET API for find single data.
         app.get("/service/:id", async(req, res) => {
             const id = req.params.id;
-            const query = { _id: ObjectId(id) };
+            const query = { _id: ObjectId(id)};
             const oneService = await servicesCollection.findOne(query);
             res.send(oneService);
         });
-        app.get("/userInfo/:id", async(req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id)};
-            const findService = await userInfoCollection.findOne(query);
-            res.send(findService)
-        });
+        
 
         // POST API for create single data
         app.post("/service", async(req, res) => {
@@ -55,20 +49,6 @@ async function run() {
             const singleService = await  servicesCollection.insertOne(service);
             res.json(singleService);
         });
-
-
-        app.post("/userInfo", async(req, res) => {
-            const user = req.body;
-            const singleUser = await userInfoCollection.insertOne(user);
-            res.json(singleUser);
-        });
-
-        app.get("/usersInfo", async(req, res) => {
-            const cursor = userInfoCollection.find({});
-            const usersInfo = await cursor.toArray();
-            res.send(usersInfo);
-        });
-
         app.put("/update/:id", async(req, res) => {
             const id = req.params.id;
             const updateService = req.body;
@@ -93,14 +73,33 @@ async function run() {
             res.send(deleteUser)
         });
 
+        
+
         app.delete("/userInfo/:id", async(req, res) => {
-            console.log("delete");
             const id = req.params.id;
             const query = { _id: ObjectId(id)};
             const deleteService = await userInfoCollection.deleteOne(query);
             res.send(deleteService)
         });
 
+        app.post("/userInfo", async(req, res) => {
+            const user = req.body;
+            const singleUser = await userInfoCollection.insertOne(user);
+            res.json(singleUser);
+        });
+
+        app.get("/userInfo/:id", async(req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id)};
+            const findService = await userInfoCollection.findOne(query);
+            res.send(findService)
+        });
+
+        app.get("/usersInfo", async(req, res) => {
+            const cursor = userInfoCollection.find({});
+            const usersInfo = await cursor.toArray();
+            res.send(usersInfo);
+        });
 
 
     } finally {
