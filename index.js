@@ -40,6 +40,12 @@ async function run() {
             const oneService = await servicesCollection.findOne(query);
             res.send(oneService);
         });
+        app.get("/userInfo/:id", async(req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id)};
+            const findService = await userInfoCollection.findOne(query);
+            res.send(findService)
+        });
 
         // POST API for create single data
         app.post("/service", async(req, res) => {
