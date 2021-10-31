@@ -23,6 +23,7 @@ async function run() {
         await client.connect();
         const database = client.db("triptracker");
         const servicesCollection = database.collection("services");
+
         const userInfoCollection = database.collection("userInfo");
 
         // GET API for find multiple data.
@@ -80,9 +81,20 @@ async function run() {
         app.delete("/service/:id", async(req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
-            const deleteService = await servicesCollection.deleteOne(query);
+            const deleteUser = await  servicesCollection.deleteOne(query);
+            res.send(deleteUser)
+        });
+
+        app.delete("/userInfo/:id", async(req, res) => {
+            console.log("delete");
+            const id = req.params.id;
+            const query = { _id: ObjectId(id)};
+            const deleteService = await userInfoCollection.deleteOne(query);
             res.send(deleteService)
-        })
+        });
+
+
+
     } finally {
         // await client.close();
     }
