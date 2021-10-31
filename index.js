@@ -22,10 +22,11 @@ async function run() {
     try {
         await client.connect();
         const database = client.db("triptracker");
+        const userInfoCollection = database.collection("userInfo");
+
         const database2 = client.db("travel-house");
+        const servicesCollection = database2.collection("services");
         
-        const servicesCollection = database.collection("services");
-        const userInfoCollection = database2.collection("userInfo");
 
         // GET API for find multiple data.
         app.get("/services", async(req, res) => {
@@ -49,6 +50,8 @@ async function run() {
             const singleService = await  servicesCollection.insertOne(service);
             res.json(singleService);
         });
+
+        // API single data updated
         app.put("/update/:id", async(req, res) => {
             const id = req.params.id;
             const updateService = req.body;
