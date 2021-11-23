@@ -26,33 +26,33 @@ async function run() {
 
         const database2 = client.db("travel-house");
         const servicesCollection = database2.collection("services");
-        
+
 
         // GET API for find multiple data.
-        app.get("/services", async(req, res) => {
-                const cursor = servicesCollection.find({});
-                const services = await cursor.toArray();
-                res.send(services);
-            });
-            
+        app.get("/services", async (req, res) => {
+            const cursor = servicesCollection.find({});
+            const services = await cursor.toArray();
+            res.send(services);
+        });
+
         // GET API for find single data.
-        app.get("/service/:id", async(req, res) => {
+        app.get("/service/:id", async (req, res) => {
             const id = req.params.id;
-            const query = { _id: ObjectId(id)};
+            const query = { _id: ObjectId(id) };
             const oneService = await servicesCollection.findOne(query);
             res.send(oneService);
         });
-        
+
 
         // POST API for create single data
-        app.post("/service", async(req, res) => {
+        app.post("/service", async (req, res) => {
             const service = req.body;
-            const singleService = await  servicesCollection.insertOne(service);
+            const singleService = await servicesCollection.insertOne(service);
             res.json(singleService);
         });
 
         // API single data updated
-        app.put("/update/:id", async(req, res) => {
+        app.put("/update/:id", async (req, res) => {
             const id = req.params.id;
             const updateService = req.body;
             const filter = { _id: ObjectId(id) };
@@ -69,36 +69,36 @@ async function run() {
         });
 
         // delete api
-        app.delete("/service/:id", async(req, res) => {
+        app.delete("/service/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
-            const deleteUser = await  servicesCollection.deleteOne(query);
+            const deleteUser = await servicesCollection.deleteOne(query);
             res.send(deleteUser)
         });
 
-        
 
-        app.delete("/userInfo/:id", async(req, res) => {
+        // delete user by ID
+        app.delete("/userInfo/:id", async (req, res) => {
             const id = req.params.id;
-            const query = { _id: ObjectId(id)};
+            const query = { _id: ObjectId(id) };
             const deleteService = await userInfoCollection.deleteOne(query);
             res.send(deleteService)
         });
 
-        app.post("/userInfo", async(req, res) => {
+        app.post("/userInfo", async (req, res) => {
             const user = req.body;
             const singleUser = await userInfoCollection.insertOne(user);
             res.json(singleUser);
         });
 
-        app.get("/userInfo/:id", async(req, res) => {
+        app.get("/userInfo/:id", async (req, res) => {
             const id = req.params.id;
-            const query = { _id: ObjectId(id)};
+            const query = { _id: ObjectId(id) };
             const findService = await userInfoCollection.findOne(query);
             res.send(findService)
         });
 
-        app.get("/usersInfo", async(req, res) => {
+        app.get("/usersInfo", async (req, res) => {
             const cursor = userInfoCollection.find({});
             const usersInfo = await cursor.toArray();
             res.send(usersInfo);
